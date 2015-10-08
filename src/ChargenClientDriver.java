@@ -28,7 +28,9 @@ public class ChargenClientDriver {
                                                   Integer.parseInt(args[3]));
                 }
             }
-            client.printToStream(System.out);
+            if (client != null) {
+                client.printToStream(System.out);
+            }
         }
         catch (NumberFormatException e) {
             System.out.println("Error: Your second argument doesn't seem to be a number.");

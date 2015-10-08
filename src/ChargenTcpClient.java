@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -16,7 +18,12 @@ public class ChargenTcpClient extends AbstractChargenClient {
         super(host, port);
     }
 
-    public void printToStream(PrintStream out) {
-
+    public void printToStream(PrintStream out) throws IOException{
+        Socket socket = new Socket(getHost(), getPort());
+        socket.setSoTimeout(TIME_OUT);
+        InputStream stream = socket.getInputStream();
+        while (true) {
+            out.write(stream.read());
+        }
     }
 }
