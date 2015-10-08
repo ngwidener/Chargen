@@ -1,4 +1,5 @@
 import java.io.PrintStream;
+import java.io.IOException;
 import java.net.InetAddress;
 
 /**
@@ -6,12 +7,17 @@ import java.net.InetAddress;
  */
 public abstract class AbstractChargenClient implements ChargenClient {
 
+    /** The Daytime protocol port number specified in RFC 864 */
+    private static final int CHARGEN_PORT = 19;
+    /** The number of milliseconds the socket will wait for a response */
+    protected static final int TIME_OUT = 500;
+
     private InetAddress host;
 
     private int port;
 
     public AbstractChargenClient(InetAddress host) {
-        this.host = host;
+        this(host, CHARGEN_PORT);
     }
 
     public AbstractChargenClient(InetAddress host, int port) {
@@ -27,7 +33,7 @@ public abstract class AbstractChargenClient implements ChargenClient {
         return port;
     }
 
-    public void printToStream(PrintStream out) {
+    public void printToStream(PrintStream out) throws IOException {
 
     }
 }
