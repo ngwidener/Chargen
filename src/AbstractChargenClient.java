@@ -9,7 +9,7 @@ import java.net.InetAddress;
  *
  * @author Nicholas Widener
  * @author Jameson Burchette
- * @varsion 10/8/2015
+ * @version 10/8/2015
  */
 public abstract class AbstractChargenClient implements ChargenClient {
 

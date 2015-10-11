@@ -7,7 +7,7 @@ import java.net.SocketException;
 
 /**
  * A concrete implementation of AbstractChargenClient that uses the UDP version of the
- * Chargen protocol described int RFC 864.
+ * Chargen protocol described in RFC 864.
  *
  * @author Nicholas Widener
  * @author Jameson Burchette
