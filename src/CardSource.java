@@ -1,20 +1,15 @@
 
 /**
  *
- * @author Dr. Andrew Scott and Dr. William Kreahling
- * @version V1.1 Jab 2015
+ * Models a playing card.
  *
- * This card models a playing card which can have the suit, Spade, Heart, Club or
- * Diamond. It can also be an ace, 2, 3, 4, 5, 6, 7, 8, 9, 10, Jack, Queen or
- * King.<br>
+ * @author Nicholas Widener
+ * @author Jameson Burchette
  *
- * The card are ranked 1 to 13 where Ace is 1 and King 13.<br>
- * The cards are valued a 1 to 10, with all picture cards (Royals) being worth
- * 10.
+ * @version October 2015
  *
  */
-//#############################################################################
-public class CardSource {
+public class CardSource implements ChargenSource {
 
 
     /**The cards face name and value**/
@@ -98,17 +93,33 @@ public class CardSource {
     }
 
 
+    /**
+     * Gets the next card.
+     * @return the next card.
+     */
+    @Override
+    public Object next() {
+        return null;
+    }
+
+    /**
+     * The cards to send.
+     * @return the cards to send.
+     */
+    @Override
+    public int itemsToSend() {
+        return 0;
+    }
 }
 
 /**
  *
- * @author Dr. Andrew Scott and Dr. Whilliam Kreahling.
- * @Version v1.1 Jan 2015
+ * Enumeration for the card values.
  *
- * An enumeration to model the names and values of cards as well as their rank.
- * <br>
- * Values are 1 to 10 with all picture cards (royals) being worth 10.<br>
- * Ranks are 1 to 13 starting with the ace and ending on king.
+ * @author Nicholas Widener
+ * @author Jameson Burchette
+ *
+ * @version October 2015
  *
  */
 enum Face {
@@ -193,10 +204,12 @@ enum Face {
 
 /**
  *
- * @author Dr. Andrew Scott and Dr. William Kreahling.
- * @version V1.1 Jan 2015
+ * Enumeration for the suit of the card.
  *
- * A set of enumerate objects to define the suits in a pack of cards.
+ * @author Nicholas Widener
+ * @author Jameson Burchette
+ *
+ * @version October 2015
  *
  */
 enum Suit {
