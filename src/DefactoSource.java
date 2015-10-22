@@ -8,54 +8,42 @@
  */
 public class DefactoSource implements ChargenSource {
 
-    private static final int ASCII_LIMIT = 126;
-    private static final int LINE_LIMIT = 71;
+    private static final int OFFSET = 32;
+    private static final int ASCII_MAX = 95;
+    private static final int LINE_MAX = 72;
     private static final int CARRIAGE_RETURN = 13;
     private static final int LINE_FEED = 10;
 
-    private int ascii;
+    private int lines;
     private int lineLength;
-    private int lineStart;
+    private int itemsToSend;
 
-    public DefactoSource() {
-        ascii = 32;
+    public DefactoSource(int itemsToSend) {
+        lines = 0;
         lineLength = 0;
-        lineStart = 33;
+        this.itemsToSend = itemsToSend;
     }
 
     /**
      * Gets the next character.
      * @return the next character.
-     */
+    */
     @Override
     public Character next() {
-        if (ascii > ASCII_LIMIT) {
-            ascii = 32;
+        int ascii = 0;
+        if (lineLength >= LINE_MAX) {
+            lines++;
+            lineLength = -2;
+            ascii = CARRIAGE_RETURN;
         }
-        if (lineLength > LINE_LIMIT) {
-            if (ascii != CARRIAGE_RETURN && ascii != LINE_FEED) {
-                ascii = CARRIAGE_RETURN;
-            }
-            else if (ascii == CARRIAGE_RETURN) {
-                ascii = LINE_FEED;
-            }
-            else {
-                ascii = lineStart;
-                lineLength = 1;
-                if (lineStart == ASCII_LIMIT) {
-                    lineStart = 32;
-                }
-                else {
-                    lineStart++;
-                }
-            }
+        else if (lineLength < 0) {
+            ascii = LINE_FEED;
         }
-        Character character = new Character((char)ascii);
-        if (lineLength <= LINE_LIMIT) {
-            ascii++;
-            lineLength++;
+        else {
+            ascii = ((lineLength + lines) % ASCII_MAX) + OFFSET;
         }
-        return character;
+        lineLength++;
+        return new Character((char)ascii);
     }
 
     /**
@@ -64,6 +52,6 @@ public class DefactoSource implements ChargenSource {
      */
     @Override
     public int itemsToSend() {
-        return 0;
+        return itemsToSend;
     }
 }

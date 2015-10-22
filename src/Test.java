@@ -5,7 +5,7 @@ import java.util.Scanner;
  */
 public class Test {
     public static void main (String[] args) {
-        DefactoSource source = new DefactoSource();
+        DefactoSource source = new DefactoSource(512);
         Scanner scanner = new Scanner(System.in);
         while (true) {
             int input = scanner.nextInt();
@@ -13,9 +13,10 @@ public class Test {
                 System.exit(0);
             }
             if (input == 1) {
-                for (int i = 0; i < 512; i++) {
+                while (source.itemsToSend() > 0) {
                     System.out.print(source.next());
                 }
+                System.out.println();
             }
         }
     }
