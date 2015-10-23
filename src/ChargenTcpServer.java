@@ -16,6 +16,8 @@ public class ChargenTcpServer extends AbstractChargenServer {
 
     ServerSocket welcomeSocket;
 
+    private static final int ITEMS_TO_SEND = Integer.MAX_VALUE;
+
     ChargenSource source;
 
     /**
@@ -26,6 +28,7 @@ public class ChargenTcpServer extends AbstractChargenServer {
         super();
         try {
             welcomeSocket = new ServerSocket();
+            source = new DefactoSource(ITEMS_TO_SEND);
 
         } catch (IOException ioe) {
             throw new ChargenServerException(ioe);
@@ -41,6 +44,7 @@ public class ChargenTcpServer extends AbstractChargenServer {
         super(port);
         try {
             welcomeSocket = new ServerSocket();
+            source = new DefactoSource(ITEMS_TO_SEND);
 
         } catch (IOException ioe) {
             throw new ChargenServerException(ioe);
@@ -57,6 +61,7 @@ public class ChargenTcpServer extends AbstractChargenServer {
         super(source);
         try {
             welcomeSocket = new ServerSocket();
+            this.source = getSource();
 
         } catch (IOException ioe) {
             throw new ChargenServerException(ioe);
@@ -73,6 +78,8 @@ public class ChargenTcpServer extends AbstractChargenServer {
         super(port, source);
         try {
             welcomeSocket = new ServerSocket();
+            port = getPort();
+            this.source = getSource();
 
         } catch (IOException ioe) {
             throw new ChargenServerException(ioe);
@@ -83,7 +90,6 @@ public class ChargenTcpServer extends AbstractChargenServer {
      * Listens for the clients to make a request.
      *
      * @throws ChargenServerException
-     * @throws IOException
      */
     public void listen() throws ChargenServerException {
 

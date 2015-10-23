@@ -1,5 +1,3 @@
-import javax.smartcardio.Card;
-
 /**
  *
  * Models a playing card.
@@ -99,7 +97,7 @@ public class CardSource implements ChargenSource {
      * @return the next card.
      */
     @Override
-    public Card next() {
+    public CardSource next() {
         return null;
     }
 
