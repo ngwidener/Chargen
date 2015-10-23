@@ -17,6 +17,7 @@ public class ChargenServerDriver {
      */
     public static void main(String[] args) throws ChargenServerException, IOException {
 
+
         ChargenTcpServer tcpServer = new ChargenTcpServer(1234);
 
         tcpServer.listen();

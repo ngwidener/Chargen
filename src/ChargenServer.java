@@ -15,5 +15,5 @@ public interface ChargenServer {
     /**
      * Listens for requests to be made by the clients.
      */
-    public void listen() throws ChargenServerException, IOException;
+    public void listen() throws ChargenServerException;
 }

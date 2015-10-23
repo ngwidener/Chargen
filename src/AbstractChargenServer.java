@@ -84,7 +84,7 @@ public class AbstractChargenServer implements ChargenServer {
     /**
      * Listen for clients to talk to the server.
      */
-    public void listen() throws ChargenServerException, IOException{
+    public void listen() throws ChargenServerException {
 
     }
 }

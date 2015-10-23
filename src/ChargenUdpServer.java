@@ -18,14 +18,21 @@ public class ChargenUdpServer extends AbstractChargenServer {
     /**Socket to the internet*/
     DatagramSocket serverSocket;
 
+    private static final int ITEMS_TO_SEND = 512;
+
     /**
      * Constructor; calls super.
      * @throws ChargenServerException
      */
-    public ChargenUdpServer() throws ChargenServerException, IOException {
+    public ChargenUdpServer() throws ChargenServerException {
         super();
+        source = new DefactoSource(ITEMS_TO_SEND);
 
-        serverSocket = new DatagramSocket(getPort());
+        try {
+            serverSocket = new DatagramSocket(getPort());
+        } catch (IOException ioe) {
+            throw new ChargenServerException(ioe);
+        }
     }
 
     /**
@@ -33,9 +40,15 @@ public class ChargenUdpServer extends AbstractChargenServer {
      * @param port the port number.
      * @throws ChargenServerException
      */
-    public ChargenUdpServer(int port) throws ChargenServerException, IOException {
+    public ChargenUdpServer(int port) throws ChargenServerException {
         super(port);
-        serverSocket = new DatagramSocket(port);
+        source = new DefactoSource(ITEMS_TO_SEND);
+
+        try {
+            serverSocket = new DatagramSocket(port);
+        } catch (IOException ioe) {
+            throw new ChargenServerException(ioe);
+        }
     }
 
     /**
@@ -43,9 +56,15 @@ public class ChargenUdpServer extends AbstractChargenServer {
      * @param source the source.
      * @throws ChargenServerException
      */
-    public ChargenUdpServer(ChargenSource source) throws ChargenServerException, IOException {
+    public ChargenUdpServer(ChargenSource source) throws ChargenServerException {
         super(source);
-        serverSocket = new DatagramSocket(getPort());
+        this.source = source;
+
+        try {
+            serverSocket = new DatagramSocket(getPort());
+        } catch (IOException ioe) {
+            throw new ChargenServerException(ioe);
+        }
     }
 
     /**
@@ -54,24 +73,31 @@ public class ChargenUdpServer extends AbstractChargenServer {
      * @param source the source.
      * @throws ChargenServerException
      */
-    public ChargenUdpServer(int port, ChargenSource source) throws ChargenServerException, IOException {
+    public ChargenUdpServer(int port, ChargenSource source) throws ChargenServerException {
         super(port, source);
-        serverSocket = new DatagramSocket(getPort());
+        port = getPort();
+
+        try {
+            serverSocket = new DatagramSocket(getPort());
+        } catch (IOException ioe) {
+            throw new ChargenServerException(ioe);
+        }
     }
 
     /**
      * Listens for the clients to make a request.
      */
-    public void listen() throws ChargenServerException, IOException{
+    public void listen() throws ChargenServerException {
+        try {
+            while (!Thread.interrupted()) {
+                byte[] receiveData = new byte[512];
 
-        while (!Thread.interrupted()) {
-            byte[] receiveData = new byte[512];
+                DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 
-            DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-
-            serverSocket.receive(receivePacket);
-
-
+                serverSocket.receive(receivePacket);
+            }
+        } catch (IOException ioe) {
+            throw new ChargenServerException(ioe);
         }
     }
 }

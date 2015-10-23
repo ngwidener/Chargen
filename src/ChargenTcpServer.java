@@ -1,4 +1,3 @@
-import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -23,10 +22,14 @@ public class ChargenTcpServer extends AbstractChargenServer {
      * Constructor
      * @throws ChargenServerException
      */
-    public ChargenTcpServer() throws ChargenServerException, IOException {
+    public ChargenTcpServer() throws ChargenServerException {
         super();
-        welcomeSocket = new ServerSocket();
+        try {
+            welcomeSocket = new ServerSocket();
 
+        } catch (IOException ioe) {
+            throw new ChargenServerException(ioe);
+        }
     }
 
     /**
@@ -34,9 +37,14 @@ public class ChargenTcpServer extends AbstractChargenServer {
      * @param port the port number.
      * @throws ChargenServerException
      */
-    public ChargenTcpServer(int port) throws ChargenServerException, IOException {
+    public ChargenTcpServer(int port) throws ChargenServerException {
         super(port);
-        welcomeSocket = new ServerSocket(port);
+        try {
+            welcomeSocket = new ServerSocket();
+
+        } catch (IOException ioe) {
+            throw new ChargenServerException(ioe);
+        }
 
     }
 
@@ -45,9 +53,14 @@ public class ChargenTcpServer extends AbstractChargenServer {
      * @param source the source.
      * @throws ChargenServerException
      */
-    public ChargenTcpServer(ChargenSource source) throws ChargenServerException, IOException {
+    public ChargenTcpServer(ChargenSource source) throws ChargenServerException {
         super(source);
-        welcomeSocket = new ServerSocket();
+        try {
+            welcomeSocket = new ServerSocket();
+
+        } catch (IOException ioe) {
+            throw new ChargenServerException(ioe);
+        }
     }
 
     /**
@@ -56,9 +69,14 @@ public class ChargenTcpServer extends AbstractChargenServer {
      * @param source the source.
      * @throws ChargenServerException
      */
-    public ChargenTcpServer(int port, ChargenSource source) throws ChargenServerException, IOException {
+    public ChargenTcpServer(int port, ChargenSource source) throws ChargenServerException {
         super(port, source);
-        welcomeSocket = new ServerSocket(port);
+        try {
+            welcomeSocket = new ServerSocket();
+
+        } catch (IOException ioe) {
+            throw new ChargenServerException(ioe);
+        }
     }
 
     /**
@@ -67,16 +85,20 @@ public class ChargenTcpServer extends AbstractChargenServer {
      * @throws ChargenServerException
      * @throws IOException
      */
-    public void listen() throws ChargenServerException, IOException{
+    public void listen() throws ChargenServerException {
 
-        while (!Thread.interrupted()) {
-            Socket connectionSocket = welcomeSocket.accept();
+        try {
+            while (!Thread.interrupted()) {
+                Socket connectionSocket = welcomeSocket.accept();
 
-            Scanner clientIn = new Scanner(connectionSocket.getInputStream());
+                Scanner clientIn = new Scanner(connectionSocket.getInputStream());
 
-            DataOutputStream clientOut = new DataOutputStream(connectionSocket.getOutputStream());
+                DataOutputStream clientOut = new DataOutputStream(connectionSocket.getOutputStream());
 
 
+            }
+        } catch (IOException ioe) {
+            throw new ChargenServerException(ioe);
         }
     }
 }
