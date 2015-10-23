@@ -8,8 +8,8 @@
  */
 public class AlphaNumericSource implements ChargenSource {
 
-    private static final int ASCII_START = 32;
-    private static final int ASCII_RANGE = 95;
+    private static final int ASCII_START = 48;
+    private static final int ASCII_RANGE = 79;
     private static final int LINE_LEN = 72;
     private static final int CARRIAGE_RETURN = 13;
     private static final int LINE_FEED = 10;

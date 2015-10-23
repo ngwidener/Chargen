@@ -11,6 +11,8 @@ import java.io.IOException;
  */
 public class AbstractChargenServer implements ChargenServer {
 
+    private static final int DEFAULT_PORT = 9642;
+
     /**The port for the client to talk to*/
     private int port;
 
@@ -22,8 +24,7 @@ public class AbstractChargenServer implements ChargenServer {
      * @throws ChargenServerException
      */
     public AbstractChargenServer() throws ChargenServerException{
-        this.port = port;
-        this.source = source;
+        this(DEFAULT_PORT, new DefactoSource(Integer.MAX_VALUE));
     }
 
     /**
@@ -32,8 +33,7 @@ public class AbstractChargenServer implements ChargenServer {
      * @throws ChargenServerException
      */
     public AbstractChargenServer(int port) throws ChargenServerException{
-        this.port = port;
-        this.source = source;
+        this(port, new DefactoSource(Integer.MAX_VALUE));
     }
 
     /**
@@ -42,8 +42,7 @@ public class AbstractChargenServer implements ChargenServer {
      * @throws ChargenServerException
      */
     public AbstractChargenServer(ChargenSource source) throws ChargenServerException{
-        this.source = source;
-        this.port = port;
+        this(DEFAULT_PORT, source);
     }
 
     /**

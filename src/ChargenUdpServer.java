@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.util.ArrayList;
 
 /**
  * The UDP server implementation for our Chargen Server.
@@ -12,9 +14,6 @@ import java.net.DatagramSocket;
  */
 public class ChargenUdpServer extends AbstractChargenServer {
 
-    /**The source for our characters*/
-    ChargenSource source;
-
     /**Socket to the internet*/
     DatagramSocket serverSocket;
 
@@ -25,8 +24,7 @@ public class ChargenUdpServer extends AbstractChargenServer {
      * @throws ChargenServerException
      */
     public ChargenUdpServer() throws ChargenServerException {
-        super();
-        source = new DefactoSource(ITEMS_TO_SEND);
+        super(new DefactoSource(ITEMS_TO_SEND));
 
         try {
             serverSocket = new DatagramSocket(getPort());
@@ -41,11 +39,10 @@ public class ChargenUdpServer extends AbstractChargenServer {
      * @throws ChargenServerException
      */
     public ChargenUdpServer(int port) throws ChargenServerException {
-        super(port);
-        source = new DefactoSource(ITEMS_TO_SEND);
+        super(port, new DefactoSource(ITEMS_TO_SEND));
 
         try {
-            serverSocket = new DatagramSocket(port);
+            serverSocket = new DatagramSocket(getPort());
         } catch (IOException ioe) {
             throw new ChargenServerException(ioe);
         }
@@ -58,7 +55,6 @@ public class ChargenUdpServer extends AbstractChargenServer {
      */
     public ChargenUdpServer(ChargenSource source) throws ChargenServerException {
         super(source);
-        this.source = source;
 
         try {
             serverSocket = new DatagramSocket(getPort());
@@ -75,7 +71,6 @@ public class ChargenUdpServer extends AbstractChargenServer {
      */
     public ChargenUdpServer(int port, ChargenSource source) throws ChargenServerException {
         super(port, source);
-        port = getPort();
 
         try {
             serverSocket = new DatagramSocket(getPort());
@@ -90,14 +85,37 @@ public class ChargenUdpServer extends AbstractChargenServer {
     public void listen() throws ChargenServerException {
         try {
             while (!Thread.interrupted()) {
-                byte[] receiveData = new byte[512];
-
-                DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-
+                ChargenSource source = getSource();
+                DatagramPacket receivePacket = new DatagramPacket(new byte[0], 0);
                 serverSocket.receive(receivePacket);
+                /**
+                if (source.itemsToSend() <= 0) {
+                    changeSource(new DefactoSource(ITEMS_TO_SEND));
+                }
+                 */
+                int returnPort = receivePacket.getPort();
+                InetAddress returnAdd = receivePacket.getAddress();
+
+                String toSend = "";
+                while (source.itemsToSend() > 0) {
+                    toSend += source.next();
+                }
+                byte[] send = toSend.getBytes();
+                DatagramPacket sendPacket = new DatagramPacket(send, send.length, returnAdd, returnPort);
+                serverSocket.send(sendPacket);
             }
         } catch (IOException ioe) {
             throw new ChargenServerException(ioe);
+        }
+    }
+
+    public static void main(String[] args) {
+        try {
+            ChargenUdpServer server = new ChargenUdpServer(9876, new DefactoSource(512));
+            server.listen();
+        }
+        catch (Exception e) {
+
         }
     }
 }
