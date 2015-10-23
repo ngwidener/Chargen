@@ -41,6 +41,7 @@ public class DefactoSource implements ChargenSource {
         }
         else {
             ascii = ((lineLength + lines) % ASCII_MAX) + OFFSET;
+            itemsToSend--;
         }
         lineLength++;
         return new Character((char)ascii);

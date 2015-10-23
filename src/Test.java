@@ -7,17 +7,9 @@ public class Test {
     public static void main (String[] args) {
         DefactoSource source = new DefactoSource(512);
         Scanner scanner = new Scanner(System.in);
-        while (true) {
-            int input = scanner.nextInt();
-            if (input == 0) {
-                System.exit(0);
-            }
-            if (input == 1) {
-                while (source.itemsToSend() > 0) {
-                    System.out.print(source.next());
-                }
-                System.out.println();
-            }
+        while (source.itemsToSend() > 0) {
+            System.out.print(source.next());
         }
+        System.out.println();
     }
 }
