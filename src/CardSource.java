@@ -1,3 +1,4 @@
+import javax.smartcardio.Card;
 
 /**
  *
@@ -98,7 +99,7 @@ public class CardSource implements ChargenSource {
      * @return the next card.
      */
     @Override
-    public Object next() {
+    public Card next() {
         return null;
     }
 

@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 /**
  * Serves as the interface for our server implementation.
  * Provides a listen() method that will be implemented in the
@@ -13,5 +15,5 @@ public interface ChargenServer {
     /**
      * Listens for requests to be made by the clients.
      */
-    public void listen();
+    public void listen() throws ChargenServerException, IOException;
 }
