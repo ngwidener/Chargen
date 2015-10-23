@@ -4,10 +4,9 @@
  */
 public class Test {
     public static void main (String[] args) {
-        ChargenSource source = new NumericSource(512);
+        ChargenSource source = new AlphaNumericSource(512);
         while (source.itemsToSend() > 0) {
             System.out.print(source.next());
         }
-        System.out.println();
     }
 }

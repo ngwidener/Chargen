@@ -8,19 +8,21 @@
  */
 public class NonAlphanumericSource implements ChargenSource {
 
-    private static final int OFFSET = 32;
-    private static final int ASCII_MAX = 95;
-    private static final int LINE_MAX = 72;
+    private static final int ASCII_START = 32;
+    private static final int ASCII_RANGE = 95;
+    private static final int LINE_LEN = 72;
     private static final int CARRIAGE_RETURN = 13;
     private static final int LINE_FEED = 10;
 
+    private int currentLen;
     private int lines;
-    private int lineLength;
+    private int asciiBase;
     private int itemsToSend;
 
     public NonAlphanumericSource(int itemsToSend) {
-        lines = 1;
-        lineLength = 0;
+        currentLen = 0;
+        lines = 0;
+        asciiBase = 0;
         this.itemsToSend = itemsToSend;
     }
 
@@ -31,20 +33,27 @@ public class NonAlphanumericSource implements ChargenSource {
      */
     @Override
     public Character next() {
-        int ascii = 0;
-        if (lineLength > LINE_MAX) {
+        int charValue = ((asciiBase + lines) % ASCII_RANGE) + ASCII_START;
+        if (currentLen >= LINE_LEN) {
+            asciiBase = 0;
+            charValue = CARRIAGE_RETURN;
             lines++;
-            lineLength = -2;
+            currentLen = -1;
         }
-        else if (lineLength < 0) {
-            ascii = LINE_FEED;
+        else if (currentLen < 0) {
+            charValue = LINE_FEED;
+            currentLen++;
         }
         else {
-            ascii = lines + OFFSET;
+            while (Character.isLetterOrDigit((char)charValue)) {
+                asciiBase++;
+                charValue = ((asciiBase + lines) % ASCII_RANGE) + ASCII_START;
+            }
+            asciiBase++;
             itemsToSend--;
+            currentLen++;
         }
-        lineLength++;
-        return (char)ascii;
+        return new Character((char) charValue);
     }
 
     /**
