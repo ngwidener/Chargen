@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 /**
  * Provides all the attributes that are common among all of our Chargen
  * server implementations.
@@ -9,7 +11,7 @@
  */
 public class AbstractChargenServer implements ChargenServer {
 
-    /**The port we want to talk to*/
+    /**The port for the client to talk to*/
     private int port;
 
     /**The source of the data we want to send back*/
@@ -82,7 +84,7 @@ public class AbstractChargenServer implements ChargenServer {
     /**
      * Listen for clients to talk to the server.
      */
-    public void listen() {
+    public void listen() throws ChargenServerException, IOException{
 
     }
 }

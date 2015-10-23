@@ -44,7 +44,7 @@ public class DefactoSource implements ChargenSource {
             itemsToSend--;
         }
         lineLength++;
-        return new Character((char)ascii);
+        return (char)ascii;
     }
 
     /**

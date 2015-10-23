@@ -8,6 +8,14 @@
  */
 public class NumericSource implements ChargenSource {
 
+    int itemsToSend;
+
+    public NumericSource(int itemsToSend) {
+        this.itemsToSend = itemsToSend;
+    }
+
+
+
     /**
      * Gets the next character.
      * @return the next character.
@@ -23,6 +31,6 @@ public class NumericSource implements ChargenSource {
      */
     @Override
     public int itemsToSend() {
-        return 0;
+        return itemsToSend;
     }
 }
