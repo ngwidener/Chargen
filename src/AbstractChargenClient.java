@@ -16,7 +16,7 @@ public abstract class AbstractChargenClient implements ChargenClient {
     /** The Chargen protocol port number specified in RFC 864 */
     protected static final int CHARGEN_PORT = 19;
     /** The number of milliseconds the socket will wait for a response */
-    protected static final int TIME_OUT = 500;
+    protected static final int TIME_OUT = 5000;
     /** The server running the Chargen protocol */
     private InetAddress host;
     /** The port number to connect to */

@@ -88,11 +88,7 @@ public class ChargenUdpServer extends AbstractChargenServer {
                 ChargenSource source = getSource();
                 DatagramPacket receivePacket = new DatagramPacket(new byte[0], 0);
                 serverSocket.receive(receivePacket);
-                /**
-                if (source.itemsToSend() <= 0) {
-                    changeSource(new DefactoSource(ITEMS_TO_SEND));
-                }
-                 */
+
                 int returnPort = receivePacket.getPort();
                 InetAddress returnAdd = receivePacket.getAddress();
 
@@ -100,6 +96,7 @@ public class ChargenUdpServer extends AbstractChargenServer {
                 while (source.itemsToSend() > 0) {
                     toSend += source.next();
                 }
+                changeSource(new DefactoSource(ITEMS_TO_SEND));
                 byte[] send = toSend.getBytes();
                 DatagramPacket sendPacket = new DatagramPacket(send, send.length, returnAdd, returnPort);
                 serverSocket.send(sendPacket);
