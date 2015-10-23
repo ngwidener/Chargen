@@ -9,18 +9,18 @@
 public class DefactoSource implements ChargenSource {
 
     private static final int OFFSET = 32;
-    private static final int ASCII_MAX = 95;
-    private static final int LINE_MAX = 72;
+    private static final int ASCII_RANGE = 95;
+    private static final int LINE_LEN = 72;
     private static final int CARRIAGE_RETURN = 13;
     private static final int LINE_FEED = 10;
 
     private int lines;
-    private int lineLength;
+    private int linePos;
     private int itemsToSend;
 
     public DefactoSource(int itemsToSend) {
         lines = 0;
-        lineLength = 0;
+        linePos = 0;
         this.itemsToSend = itemsToSend;
     }
 
@@ -30,20 +30,20 @@ public class DefactoSource implements ChargenSource {
     */
     @Override
     public Character next() {
-        int ascii = 0;
-        if (lineLength >= LINE_MAX) {
+        int ascii;
+        if (linePos >= LINE_LEN) {
             lines++;
-            lineLength = -2;
+            linePos = -2;
             ascii = CARRIAGE_RETURN;
         }
-        else if (lineLength < 0) {
+        else if (linePos < 0) {
             ascii = LINE_FEED;
         }
         else {
-            ascii = ((lineLength + lines) % ASCII_MAX) + OFFSET;
+            ascii = ((linePos + lines) % ASCII_RANGE) + OFFSET;
             itemsToSend--;
         }
-        lineLength++;
+        linePos++;
         return new Character((char)ascii);
     }
 

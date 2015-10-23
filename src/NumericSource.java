@@ -8,13 +8,43 @@
  */
 public class NumericSource implements ChargenSource {
 
+    private static final int OFFSET = 48;
+    private static final int ASCII_RANGE = 10;
+    private static final int LINE_LEN = 72;
+    private static final int CARRIAGE_RETURN = 13;
+    private static final int LINE_FEED = 10;
+
+    private int lines;
+    private int linePos;
+    private int itemsToSend;
+
+    public NumericSource (int itemsToSend) {
+        lines = 0;
+        linePos = 0;
+        this.itemsToSend = itemsToSend;
+    }
+
     /**
      * Gets the next character.
      * @return the next character.
      */
     @Override
     public Character next() {
-        return null;
+        int ascii;
+        if (linePos >= LINE_LEN) {
+            lines++;
+            linePos = -2;
+            ascii = CARRIAGE_RETURN;
+        }
+        else if (linePos < 0) {
+            ascii = LINE_FEED;
+        }
+        else {
+            ascii = ((linePos + lines) % ASCII_RANGE) + OFFSET;
+            itemsToSend--;
+        }
+        linePos++;
+        return new Character((char)ascii);
     }
 
     /**
@@ -23,6 +53,6 @@ public class NumericSource implements ChargenSource {
      */
     @Override
     public int itemsToSend() {
-        return 0;
+        return itemsToSend;
     }
 }
