@@ -1,3 +1,5 @@
+package server;
+
 /**
  * Interface for characters to be produced by the server.
  *

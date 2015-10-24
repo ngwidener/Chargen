@@ -1,15 +1,17 @@
+package server;
+
 /**
- * Handles alphanumeric characters for the server.
+ * Handles non alphanumeric characters for the server.
  *
  * @author Jameson Burchette
  * @author Nicholas Widener
  *
  * @version October 2015
  */
-public class AlphaNumericSource implements ChargenSource {
+public class NonAlphanumericSource implements ChargenSource {
 
-    private static final int ASCII_START = 48;
-    private static final int ASCII_RANGE = 79;
+    private static final int ASCII_START = 32;
+    private static final int ASCII_RANGE = 95;
     private static final int LINE_LEN = 72;
     private static final int CARRIAGE_RETURN = 13;
     private static final int LINE_FEED = 10;
@@ -19,15 +21,16 @@ public class AlphaNumericSource implements ChargenSource {
     private int asciiBase;
     private int itemsToSend;
 
-    public AlphaNumericSource(int itemsToSend) {
+    public NonAlphanumericSource(int itemsToSend) {
         currentLen = 0;
         lines = 0;
         asciiBase = 0;
         this.itemsToSend = itemsToSend;
     }
 
+
     /**
-     * Gets the next character.
+     * The next non alphanumeric character.
      * @return the next character.
      */
     @Override
@@ -44,7 +47,7 @@ public class AlphaNumericSource implements ChargenSource {
             currentLen++;
         }
         else {
-            while (!Character.isLetterOrDigit((char)charValue)) {
+            while (Character.isLetterOrDigit((char)charValue)) {
                 asciiBase++;
                 charValue = ((asciiBase + lines) % ASCII_RANGE) + ASCII_START;
             }
@@ -56,8 +59,8 @@ public class AlphaNumericSource implements ChargenSource {
     }
 
     /**
-     * The items to send.
-     * @return the items to send.
+     * The non alphanumeric characters to send.
+     * @return the characters to send.
      */
     @Override
     public int itemsToSend() {

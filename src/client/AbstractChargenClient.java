@@ -1,9 +1,11 @@
+package client;
+
 import java.io.PrintStream;
 import java.io.IOException;
 import java.net.InetAddress;
 
 /**
- * An abstract class that implements the ChargenClient interface. This class includes
+ * An abstract class that implements the client.ChargenClient interface. This class includes
  * attributes that are common to all Chargen client implementations, as well as protected methods
  * that enable subclasses to access those attributes.
  *

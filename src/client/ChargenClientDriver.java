@@ -1,3 +1,5 @@
+package client;
+
 import java.io.IOException;
 import java.lang.Integer;
 import java.lang.NumberFormatException;
@@ -21,11 +23,11 @@ public class ChargenClientDriver {
      */
     public static void main (String[] args) {
         if (args.length < 2 || args.length > 4) {
-            System.out.println("usage: ChargenClientDriver <TCP | UDP> <hostname> [<port #>] [flags]");
+            System.out.println("usage: client.ChargenClientDriver <TCP | UDP> <hostname> [<port #>] [flags]");
             System.exit(1);
         }
         if (!(args[0].equals("UDP") || args[0].equals("udp") || args[0].equals("TCP") || args[0].equals("tcp"))) {
-            System.out.println("usage: ChargenClientDriver <TCP | UDP> <hostname> [<port #>] [flags]");
+            System.out.println("usage: client.ChargenClientDriver <TCP | UDP> <hostname> [<port #>] [flags]");
             System.exit(1);
         }
 
@@ -53,7 +55,7 @@ public class ChargenClientDriver {
         }
         catch (NumberFormatException e) {
             System.out.println("Error: Your third argument doesn't seem to be a number.");
-            System.out.println("usage: ChargenClientDriver <TCP | UDP> <hostname> [<port #>] [flags]");
+            System.out.println("usage: client.ChargenClientDriver <TCP | UDP> <hostname> [<port #>] [flags]");
             System.exit(1);
         }
         catch (UnknownHostException e) {

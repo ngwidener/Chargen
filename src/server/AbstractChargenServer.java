@@ -1,4 +1,4 @@
-import java.io.IOException;
+package server;
 
 /**
  * Provides all the attributes that are common among all of our Chargen

@@ -1,27 +1,31 @@
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.SocketException;
-import java.io.IOException;
+package client;
 
+import java.io.PrintStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.io.IOException;
+import java.net.SocketException;
 
 /**
- * A concrete implementation of AbstractChargenClient that uses the TCP version of the
- * Chargen protocol described int RFC 864.
+ * A concrete implementation of client.AbstractChargenClient that uses the UDP version of the
+ * Chargen protocol described in RFC 864.
  *
  * @author Nicholas Widener
  * @author Jameson Burchette
  * @version 10/8/2015
  */
-public class ChargenTcpClient extends AbstractChargenClient {
+public class ChargenUdpClient extends AbstractChargenClient {
+
+    /** The length of the byte array that will receive the server's response */
+    private static final int BYTE_ARRAY_LENGTH = 1024;
 
     /**
      * Constructor; calls super constructor
      *
      * @param host The server running the Chargen protocol
      */
-    public ChargenTcpClient(InetAddress host) {
+    public ChargenUdpClient(InetAddress host) {
         super(host);
     }
 
@@ -31,12 +35,12 @@ public class ChargenTcpClient extends AbstractChargenClient {
      * @param host The server running the Chargen protocol
      * @param port The port number to connect to
      */
-    public ChargenTcpClient(InetAddress host, int port) {
+    public ChargenUdpClient(InetAddress host, int port) {
         super(host, port);
     }
 
     /**
-     * Writes characters to a PrintStream as they are received from the server.
+     * Retrieves a character sequence from the server and writes it to a PrintStream.
      *
      * @param out The stream to which the characters will be printed.
      * @throws SocketException If a socket cannot be opened
@@ -44,13 +48,14 @@ public class ChargenTcpClient extends AbstractChargenClient {
      *                     receiving a packet
      */
     public void printToStream(PrintStream out) throws SocketException, IOException {
-        Socket socket = new Socket(getHost(), getPort());
+        DatagramSocket socket = new DatagramSocket();
         socket.setSoTimeout(TIME_OUT);
-        InputStream stream = socket.getInputStream();
-        while (!socket.isInputShutdown()) {
-            out.write(stream.read());
-        }
-        stream.close();
+        byte[] response = new byte[BYTE_ARRAY_LENGTH];
+        DatagramPacket packet = new DatagramPacket(response, 0, getHost(), getPort());
+        socket.send(packet);
+        packet.setLength(BYTE_ARRAY_LENGTH);
+        socket.receive(packet);
         socket.close();
+        out.write(response);
     }
 }

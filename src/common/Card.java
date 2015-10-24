@@ -1,3 +1,5 @@
+package common;
+
 /**
  *
  * Models a playing card.
@@ -8,7 +10,7 @@
  * @version October 2015
  *
  */
-public class CardSource implements ChargenSource {
+public class Card {
 
 
     /**The cards face name and value**/
@@ -20,10 +22,10 @@ public class CardSource implements ChargenSource {
 
     /**
      * Constructs a new card.
-     * @param name The name of the card which is an instance of a Face enum
+     * @param name The name of the card which is an instance of a common.Face enum
      * @param suit The suit of the card which is an instance of the suit enum.
      */
-    public CardSource(Face name, Suit suit) {
+    public Card(Face name, Suit suit) {
         this.name = name;
         this.suit = suit;
     }
@@ -89,25 +91,6 @@ public class CardSource implements ChargenSource {
      */
     public String toString() {
         return (name.toString() + " of " +  suit.toString());
-    }
-
-
-    /**
-     * Gets the next card.
-     * @return the next card.
-     */
-    @Override
-    public CardSource next() {
-        return null;
-    }
-
-    /**
-     * The cards to send.
-     * @return the cards to send.
-     */
-    @Override
-    public int itemsToSend() {
-        return 0;
     }
 }
 

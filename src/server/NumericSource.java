@@ -1,15 +1,17 @@
+package server;
+
 /**
- * Handles the standard character sequence produced by the Chargen servers.
+ * Handles numeric characters for the server.
  *
  * @author Jameson Burchette
  * @author Nicholas Widener
  *
  * @version October 2015
  */
-public class DefactoSource implements ChargenSource {
+public class NumericSource implements ChargenSource {
 
-    private static final int OFFSET = 32;
-    private static final int ASCII_RANGE = 95;
+    private static final int OFFSET = 48;
+    private static final int ASCII_RANGE = 10;
     private static final int LINE_LEN = 72;
     private static final int CARRIAGE_RETURN = 13;
     private static final int LINE_FEED = 10;
@@ -18,7 +20,7 @@ public class DefactoSource implements ChargenSource {
     private int linePos;
     private int itemsToSend;
 
-    public DefactoSource(int itemsToSend) {
+    public NumericSource (int itemsToSend) {
         lines = 0;
         linePos = 0;
         this.itemsToSend = itemsToSend;
@@ -27,7 +29,7 @@ public class DefactoSource implements ChargenSource {
     /**
      * Gets the next character.
      * @return the next character.
-    */
+     */
     @Override
     public Character next() {
         int ascii;
