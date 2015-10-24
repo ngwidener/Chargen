@@ -9,7 +9,12 @@ import java.net.UnknownHostException;
 import java.net.InetAddress;
 
 /**
- * Created by Nicholas on 10/7/2015.
+ * The entry point of the application. Checks valid input, creates either a TCP
+ * or a UDP client using the command line arguments given, and calls its printToStream method.
+ *
+ * @author Nicholas Widener
+ * @author Jameson Burchette
+ * @version October 2015
  */
 public class ChargenClientDriver {
 
@@ -46,9 +51,13 @@ public class ChargenClientDriver {
                 if (args.length == 2) {
                     client = new ChargenTcpClient(InetAddress.getByName(args[1]));
                 }
-                else {
+                else if (args.length == 3){
                     client = new ChargenTcpClient(InetAddress.getByName(args[1]),
                                                   Integer.parseInt(args[2]));
+                }
+                else {
+                    client = new ChargenTcpClient(InetAddress.getByName(args[1]),
+                                                  Integer.parseInt(args[2]), args[3]);
                 }
             }
             client.printToStream(System.out);
@@ -75,6 +84,7 @@ public class ChargenClientDriver {
         }
         catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Add another catch block");
             System.exit(1);
         }
     }

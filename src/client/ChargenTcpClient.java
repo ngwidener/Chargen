@@ -18,23 +18,39 @@ import java.io.IOException;
  */
 public class ChargenTcpClient extends AbstractChargenClient {
 
+    private String flag;
+
     /**
-     * Constructor; calls super constructor
+     * Constructor; calls super constructor and sets flag
      *
      * @param host The server running the Chargen protocol
      */
     public ChargenTcpClient(InetAddress host) {
         super(host);
+        flag = "\r\n";
     }
 
     /**
-     * Constructor; calls super constructor
+     * Constructor; calls super constructor and sets flag
      *
      * @param host The server running the Chargen protocol
      * @param port The port number to connect to
      */
     public ChargenTcpClient(InetAddress host, int port) {
         super(host, port);
+        flag = "\r\n";
+    }
+
+    /**
+     * Constructor; calls super constructor and sets flag
+     *
+     * @param host The server running the Chargen protocol
+     * @param port The port number to connect to
+     * @param flag The string to be sent to a modified chargen server
+     */
+    public ChargenTcpClient(InetAddress host, int port, String flag) {
+        super (host, port);
+        this.flag = flag;
     }
 
     /**
@@ -48,6 +64,7 @@ public class ChargenTcpClient extends AbstractChargenClient {
     public void printToStream(PrintStream out) throws SocketException, IOException {
         Socket socket = new Socket(getHost(), getPort());
         socket.setSoTimeout(TIME_OUT);
+        socket.getOutputStream().write(flag.getBytes());
         InputStream stream = socket.getInputStream();
         while (!socket.isInputShutdown()) {
             out.write(stream.read());

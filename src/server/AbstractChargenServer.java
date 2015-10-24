@@ -10,13 +10,13 @@ package server;
  * @version October 2015
  */
 public class AbstractChargenServer implements ChargenServer {
-
+    /** The default port number to listen for connections if no port is specified */
     private static final int DEFAULT_PORT = 9642;
 
-    /**The port for the client to talk to*/
+    /** The port for the client to talk to */
     private int port;
 
-    /**The source of the data we want to send back*/
+    /** The source of the data we want to send back */
     private ChargenSource source;
 
     /**
