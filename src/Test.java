@@ -1,4 +1,4 @@
-import server.*;
+import Server.*;
 
 /**
  * Created by Jameson on 10/22/2015.
