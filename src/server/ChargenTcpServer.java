@@ -16,11 +16,10 @@ import java.util.Scanner;
  */
 public class ChargenTcpServer extends AbstractChargenServer {
 
-    ServerSocket welcomeSocket;
-
     private static final int ITEMS_TO_SEND = Integer.MAX_VALUE;
 
-    ChargenSource source;
+    ServerSocket welcomeSocket;
+    Socket connectionSocket;
 
     /**
      * Constructor
@@ -29,8 +28,7 @@ public class ChargenTcpServer extends AbstractChargenServer {
     public ChargenTcpServer() throws ChargenServerException {
         super();
         try {
-            welcomeSocket = new ServerSocket();
-            source = new DefactoSource(ITEMS_TO_SEND);
+            welcomeSocket = new ServerSocket(getPort());
 
         } catch (IOException ioe) {
             throw new ChargenServerException(ioe);
@@ -45,8 +43,7 @@ public class ChargenTcpServer extends AbstractChargenServer {
     public ChargenTcpServer(int port) throws ChargenServerException {
         super(port);
         try {
-            welcomeSocket = new ServerSocket();
-            source = new DefactoSource(ITEMS_TO_SEND);
+            welcomeSocket = new ServerSocket(getPort());
 
         } catch (IOException ioe) {
             throw new ChargenServerException(ioe);
@@ -62,8 +59,7 @@ public class ChargenTcpServer extends AbstractChargenServer {
     public ChargenTcpServer(ChargenSource source) throws ChargenServerException {
         super(source);
         try {
-            welcomeSocket = new ServerSocket();
-            this.source = getSource();
+            welcomeSocket = new ServerSocket(getPort());
 
         } catch (IOException ioe) {
             throw new ChargenServerException(ioe);
@@ -79,9 +75,7 @@ public class ChargenTcpServer extends AbstractChargenServer {
     public ChargenTcpServer(int port, ChargenSource source) throws ChargenServerException {
         super(port, source);
         try {
-            welcomeSocket = new ServerSocket();
-            port = getPort();
-            this.source = getSource();
+            welcomeSocket = new ServerSocket(getPort());
 
         } catch (IOException ioe) {
             throw new ChargenServerException(ioe);
@@ -94,17 +88,31 @@ public class ChargenTcpServer extends AbstractChargenServer {
      * @throws ChargenServerException
      */
     public void listen() throws ChargenServerException {
-
         try {
             while (!Thread.interrupted()) {
-                Socket connectionSocket = welcomeSocket.accept();
-
+                connectionSocket = welcomeSocket.accept();
                 Scanner clientIn = new Scanner(connectionSocket.getInputStream());
+                if (clientIn.hasNext()) {
+                    String flag = clientIn.next();
+                    if (flag.equals("NAN")) {
+                        changeSource(new NonAlphanumericSource(ITEMS_TO_SEND));
+                    }
+                    else if (flag.equals("AN")) {
+                        changeSource((new AlphaNumericSource(ITEMS_TO_SEND)));
+                    }
+                    else if (flag.equals("N")) {
+                        changeSource((new NumericSource(ITEMS_TO_SEND)));
+                    }
+                }
 
                 DataOutputStream clientOut = new DataOutputStream(connectionSocket.getOutputStream());
-
-
+                ChargenSource source = getSource();
+                while (source.itemsToSend() > 0) {
+                    clientOut.writeBytes(source.next().toString());
+                }
+                connectionSocket.close();
             }
+            welcomeSocket.close();
         } catch (IOException ioe) {
             throw new ChargenServerException(ioe);
         }

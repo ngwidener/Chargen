@@ -16,15 +16,16 @@ public class AlphaNumericSource implements ChargenSource {
     private static final int CARRIAGE_RETURN = 13;
     private static final int LINE_FEED = 10;
 
-    private int currentLen;
-    private int lines;
+
     private int asciiBase;
+    private int linePos;
+    private int lines;
     private int itemsToSend;
 
     public AlphaNumericSource(int itemsToSend) {
-        currentLen = 0;
-        lines = 0;
         asciiBase = 0;
+        linePos = 0;
+        lines = 0;
         this.itemsToSend = itemsToSend;
     }
 
@@ -34,26 +35,25 @@ public class AlphaNumericSource implements ChargenSource {
      */
     @Override
     public Character next() {
-        int charValue = ((asciiBase + lines) % ASCII_RANGE) + ASCII_START;
-        if (currentLen >= LINE_LEN) {
-            asciiBase = 0;
+        int charValue;
+        if (linePos >= LINE_LEN) {
             charValue = CARRIAGE_RETURN;
+            asciiBase = 0;
+            linePos = -2;
             lines++;
-            currentLen = -1;
         }
-        else if (currentLen < 0) {
+        else if (linePos < 0) {
             charValue = LINE_FEED;
-            currentLen++;
         }
         else {
-            while (!Character.isLetterOrDigit((char)charValue)) {
+            charValue = ((asciiBase + linePos + lines) % ASCII_RANGE) + ASCII_START;
+            while (!Character.isLetterOrDigit((char) charValue)) {
                 asciiBase++;
-                charValue = ((asciiBase + lines) % ASCII_RANGE) + ASCII_START;
+                charValue = ((asciiBase + linePos + lines) % ASCII_RANGE) + ASCII_START;
             }
-            asciiBase++;
             itemsToSend--;
-            currentLen++;
         }
+        linePos++;
         return new Character((char) charValue);
     }
 

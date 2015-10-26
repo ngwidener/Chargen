@@ -10,19 +10,19 @@ package server;
  */
 public class NumericSource implements ChargenSource {
 
-    private static final int OFFSET = 48;
+    private static final int ASCII_START = 48;
     private static final int ASCII_RANGE = 10;
     private static final int LINE_LEN = 72;
     private static final int CARRIAGE_RETURN = 13;
     private static final int LINE_FEED = 10;
 
-    private int lines;
     private int linePos;
+    private int lines;
     private int itemsToSend;
 
     public NumericSource (int itemsToSend) {
-        lines = 0;
         linePos = 0;
+        lines = 0;
         this.itemsToSend = itemsToSend;
     }
 
@@ -32,21 +32,21 @@ public class NumericSource implements ChargenSource {
      */
     @Override
     public Character next() {
-        int ascii;
+        int charValue;
         if (linePos >= LINE_LEN) {
-            lines++;
+            charValue = CARRIAGE_RETURN;
             linePos = -2;
-            ascii = CARRIAGE_RETURN;
+            lines++;
         }
         else if (linePos < 0) {
-            ascii = LINE_FEED;
+            charValue = LINE_FEED;
         }
         else {
-            ascii = ((linePos + lines) % ASCII_RANGE) + OFFSET;
+            charValue = ((linePos + lines) % ASCII_RANGE) + ASCII_START;
             itemsToSend--;
         }
         linePos++;
-        return new Character((char)ascii);
+        return new Character((char)charValue);
     }
 
     /**

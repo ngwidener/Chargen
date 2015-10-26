@@ -1,5 +1,7 @@
 package server;
 
+import java.util.Random;
+
 /**
  * Handles the standard character sequence produced by the Chargen servers.
  *
@@ -10,19 +12,22 @@ package server;
  */
 public class DefactoSource implements ChargenSource {
 
-    private static final int OFFSET = 32;
+    private static final int ASCII_START = 32;
     private static final int ASCII_RANGE = 95;
     private static final int LINE_LEN = 72;
     private static final int CARRIAGE_RETURN = 13;
     private static final int LINE_FEED = 10;
 
-    private int lines;
+    private int asciiBase;
     private int linePos;
+    private int lines;
     private int itemsToSend;
 
     public DefactoSource(int itemsToSend) {
-        lines = 0;
+        Random rand = new Random();
+        asciiBase = rand.nextInt(ASCII_RANGE);
         linePos = 0;
+        lines = 0;
         this.itemsToSend = itemsToSend;
     }
 
@@ -32,21 +37,21 @@ public class DefactoSource implements ChargenSource {
     */
     @Override
     public Character next() {
-        int ascii;
+        int charValue;
         if (linePos >= LINE_LEN) {
-            lines++;
+            charValue = CARRIAGE_RETURN;
             linePos = -2;
-            ascii = CARRIAGE_RETURN;
+            lines++;
         }
         else if (linePos < 0) {
-            ascii = LINE_FEED;
+            charValue = LINE_FEED;
         }
         else {
-            ascii = ((linePos + lines) % ASCII_RANGE) + OFFSET;
+            charValue = ((asciiBase + linePos + lines) % ASCII_RANGE) + ASCII_START;
             itemsToSend--;
         }
         linePos++;
-        return new Character((char)ascii);
+        return new Character((char) charValue);
     }
 
     /**

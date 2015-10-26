@@ -15,10 +15,10 @@ import java.net.InetAddress;
  */
 public class ChargenUdpServer extends AbstractChargenServer {
 
+    private static final int ITEMS_TO_SEND = 512;
+
     /**Socket to the internet*/
     DatagramSocket serverSocket;
-
-    private static final int ITEMS_TO_SEND = 512;
 
     /**
      * Constructor; calls super.
@@ -102,6 +102,7 @@ public class ChargenUdpServer extends AbstractChargenServer {
                 DatagramPacket sendPacket = new DatagramPacket(send, send.length, returnAdd, returnPort);
                 serverSocket.send(sendPacket);
             }
+            serverSocket.close();
         } catch (IOException ioe) {
             throw new ChargenServerException(ioe);
         }

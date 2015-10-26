@@ -35,6 +35,12 @@ public class ChargenClientDriver {
             System.out.println("usage: client.ChargenClientDriver <TCP | UDP> <hostname> [<port #>] [flags]");
             System.exit(1);
         }
+        if (args.length == 4 && !(args[3].equals("\r\n") || args[3].equals("NAN") ||
+                args[3].equals("AN") || args[3].equals("N") || args[3].equals("C"))) {
+            System.out.println("usage: client.ChargenClientDriver <TCP | UDP> <hostname> [<port #>] [flags]");
+            System.out.println("flags include <CR><LF>, NAN, AN, N, and C");
+            System.exit(1);
+        }
 
         try {
             ChargenClient client;

@@ -42,10 +42,11 @@ public class ChargenServerDriver {
                     server = new ChargenTcpServer();
                 }
             }
+            server.listen();
         }
         catch (NumberFormatException e) {
             System.out.println("Error: Your second argument doesn't seem to be a number.");
-            System.out.println("usage: client.ChargenClientDriver <TCP | UDP> <hostname> [<port #>] [flags]");
+            System.out.println("usage: server.ChargenServerDriver <TCP | UDP> <hostname> [<port #>] [flags]");
             System.exit(1);
         }
         catch (ChargenServerException e) {
