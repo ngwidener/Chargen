@@ -89,11 +89,15 @@ public class ChargenTcpServer extends AbstractChargenServer {
      */
     public void listen() throws ChargenServerException {
         try {
+            Scanner clientIn;
+            DataOutputStream clientOut;
+            String next;
             while (!Thread.interrupted()) {
                 connectionSocket = welcomeSocket.accept();
-                Scanner clientIn = new Scanner(connectionSocket.getInputStream());
+                clientIn = new Scanner(connectionSocket.getInputStream());
+                /**
                 if (clientIn.hasNext()) {
-                    String flag = clientIn.next();
+                    String flag = "test";
                     if (flag.equals("NAN")) {
                         changeSource(new NonAlphanumericSource(ITEMS_TO_SEND));
                     }
@@ -104,11 +108,13 @@ public class ChargenTcpServer extends AbstractChargenServer {
                         changeSource((new NumericSource(ITEMS_TO_SEND)));
                     }
                 }
+                 */
 
-                DataOutputStream clientOut = new DataOutputStream(connectionSocket.getOutputStream());
+                clientOut = new DataOutputStream(connectionSocket.getOutputStream());
                 ChargenSource source = getSource();
                 while (source.itemsToSend() > 0) {
-                    clientOut.writeBytes(source.next().toString());
+                    next = source.next().toString();
+                    clientOut.writeBytes(next);
                 }
                 connectionSocket.close();
             }
