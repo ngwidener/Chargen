@@ -5,7 +5,7 @@ import server.*;
  */
 public class Test {
     public static void main (String[] args) {
-        ChargenSource source = new AlphaNumericSource(Integer.MAX_VALUE);
+        ChargenSource source = new NonAlphanumericSource(Integer.MAX_VALUE);
         while (source.itemsToSend() > 0) {
             System.out.print(source.next());
         }

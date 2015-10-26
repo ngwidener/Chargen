@@ -17,7 +17,7 @@ public class ChargenUdpServer extends AbstractChargenServer {
 
     private static final int ITEMS_TO_SEND = 512;
 
-    /**Socket to the internet*/
+    /**Socket to send data*/
     DatagramSocket serverSocket;
 
     /**
@@ -105,16 +105,6 @@ public class ChargenUdpServer extends AbstractChargenServer {
             serverSocket.close();
         } catch (IOException ioe) {
             throw new ChargenServerException(ioe);
-        }
-    }
-
-    public static void main(String[] args) {
-        try {
-            ChargenUdpServer server = new ChargenUdpServer(9876, new DefactoSource(512));
-            server.listen();
-        }
-        catch (Exception e) {
-
         }
     }
 }

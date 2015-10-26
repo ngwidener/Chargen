@@ -111,11 +111,15 @@ public class ChargenTcpServer extends AbstractChargenServer {
 
                 clientOut = new DataOutputStream(connectionSocket.getOutputStream());
                 ChargenSource source = getSource();
-                while (source.itemsToSend() > 0) {
-                    next = source.next().toString();
-                    clientOut.writeBytes(next);
+                try {
+                    while (source.itemsToSend() > 0) {
+                        next = source.next().toString();
+                        clientOut.writeBytes(next);
+                    }
                 }
-                connectionSocket.close();
+                catch (IOException e) {
+                    connectionSocket.close();
+                }
             }
             welcomeSocket.close();
         } catch (IOException ioe) {
