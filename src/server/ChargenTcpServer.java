@@ -2,6 +2,7 @@ package server;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
@@ -89,32 +90,45 @@ public class ChargenTcpServer extends AbstractChargenServer {
      */
     public void listen() throws ChargenServerException {
         try {
-            Scanner clientIn;
-            DataOutputStream clientOut;
+            Scanner flagScanner;
+            DataOutputStream charOut;
+            ObjectOutputStream cardOut;
             String next;
             while (!Thread.interrupted()) {
                 connectionSocket = welcomeSocket.accept();
-                clientIn = new Scanner(connectionSocket.getInputStream());
+                flagScanner = new Scanner(connectionSocket.getInputStream());
 
-                if (clientIn.hasNext()) {
-                    String flag = clientIn.next();
-                    if (flag.equals("NAN")) {
+                if (flagScanner.hasNext()) {
+                    String flag = flagScanner.next();
+                    if (flag.equals("NAN") || flag.equals("nan")) {
                         changeSource(new NonAlphanumericSource(ITEMS_TO_SEND));
                     }
-                    else if (flag.equals("AN")) {
+                    else if (flag.equals("AN") || flag.equals("an")) {
                         changeSource((new AlphaNumericSource(ITEMS_TO_SEND)));
                     }
-                    else if (flag.equals("N")) {
+                    else if (flag.equals("N") || flag.equals("n")) {
                         changeSource((new NumericSource(ITEMS_TO_SEND)));
+                    }
+                    else if (flag.equals("<CR><LF>")) {
+                        changeSource((new DefactoSource((ITEMS_TO_SEND))));
+                    }
+                    else if (flag.equals("C") || flag.equals("c")) {
+                        changeSource(new CardSource(ITEMS_TO_SEND));
                     }
                 }
 
-                clientOut = new DataOutputStream(connectionSocket.getOutputStream());
+                cardOut = new ObjectOutputStream(connectionSocket.getOutputStream());
+                charOut = new DataOutputStream(connectionSocket.getOutputStream());
                 ChargenSource source = getSource();
                 try {
                     while (source.itemsToSend() > 0) {
                         next = source.next().toString();
-                        clientOut.writeBytes(next);
+                        if (source instanceof CardSource) {
+                            cardOut.writeObject(next);
+                        }
+                        else {
+                            charOut.writeBytes(next);
+                        }
                     }
                 }
                 catch (IOException e) {

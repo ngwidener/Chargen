@@ -1,12 +1,11 @@
 package client;
 
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
+import common.Card;
+
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
-import java.io.IOException;
 
 
 /**
@@ -67,11 +66,25 @@ public class ChargenTcpClient extends AbstractChargenClient {
         socket.setSoTimeout(TIME_OUT);
         DataOutputStream flagOut = new DataOutputStream(socket.getOutputStream());
         flagOut.writeBytes(flag);
-        InputStream inStream = socket.getInputStream();
+        InputStream charIn = socket.getInputStream();
+        ObjectInputStream cardIn = new ObjectInputStream(charIn);
         while (!socket.isInputShutdown()) {
-            out.write(inStream.read());
+            if (flag.equals("C") || flag.equals("c")) {
+                try {
+                    Card card = (Card)cardIn.readObject();
+                    if (card != null) {
+                        out.println(card.toString());
+                    }
+                }
+                catch (ClassNotFoundException e) {
+                    System.out.println("Class not found");
+                }
+            }
+            else {
+                out.write(charIn.read());
+            }
         }
-        inStream.close();
+        charIn.close();
         flagOut.close();
         socket.close();
     }
