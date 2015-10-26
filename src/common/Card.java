@@ -1,5 +1,7 @@
 package common;
 
+import server.ChargenSource;
+
 /**
  *
  * Models a playing card.
@@ -10,7 +12,7 @@ package common;
  * @version October 2015
  *
  */
-public class Card {
+public class Card implements ChargenSource {
 
 
     /**The cards face name and value**/
@@ -18,6 +20,8 @@ public class Card {
 
     /**The suit of the card**/
     private Suit suit;
+
+    private int itemsToSend;
 
 
     /**
@@ -65,32 +69,21 @@ public class Card {
 
 
     /**
-     * Get the rank number of the card. The rank is a number between 1 to 13
-     * where 1 is an ace and 13 is a king.
-     * @return The rank of the card.
-     */
-    public int rank() {
-        return name.getRank();
-    }
-
-
-    /**
-     * Get the card's value, that is a number between 1 to 10.<br>
-     * All picture cards (royals) have the value 10, all others are the numbers
-     * of suit symbols appearing on the card.
-     * @return The value of a card.
-     */
-    public int getValue() {
-        return name.value();
-    }
-
-
-    /**
      * Generate the name and suit of the card and return it.
      * @return The name and suit of the card.
      */
     public String toString() {
         return (name.toString() + " of " +  suit.toString());
+    }
+
+    @Override
+    public Card next() {
+        return null;
+    }
+
+    @Override
+    public int itemsToSend() {
+        return itemsToSend;
     }
 }
 
@@ -107,51 +100,31 @@ public class Card {
 enum Face {
 
     /**The names and value of each suit**/
-    ACE     ("Ace",     1),
-    DUECE   ("Duece",   2),
-    THREE   ("Three",   3),
-    FOUR    ("Four",    4),
-    FIVE    ("Five",    5),
-    SIX     ("Six",     6),
-    SEVEN   ("Seven",   7),
-    EIGHT   ("Eight",   8),
-    NINE    ("Nine",    9),
-    TEN     ("Ten",     10),
-    JACK    ("Jack",    10),
-    QUEEN   ("Queen",   10),
-    KING    ("King",    10);
+    ACE     ("Ace"),
+    DUECE   ("Duece"),
+    THREE   ("Three"),
+    FOUR    ("Four"),
+    FIVE    ("Five"),
+    SIX     ("Six"),
+    SEVEN   ("Seven"),
+    EIGHT   ("Eight"),
+    NINE    ("Nine"),
+    TEN     ("Ten"),
+    JACK    ("Jack"),
+    QUEEN   ("Queen"),
+    KING    ("King");
 
     /**The face name of the card**/
     private String  face;
-
-    /**The value of the cards, all worth their numbers except pictures are worth 10.**/
-    private int     value;
-
-    /** The rank of the cards 1 (ace) to 13 king) for each one**/
-    private int     rank;
 
 
     /**
      * A simple constructor or an enumerate object defining a single card not
      * including it's suit.
      * @param name The name of the card.
-     * @param value The value the card is worth in points.
      */
-    private Face(String name, int value) {
+    private Face(String name) {
         face        = name;
-        this.value  = value;
-        this.rank  = value;
-
-
-        switch(name) {
-            case "King":
-                rank++;
-            case "Queen":
-                rank++;
-            case "Jack":
-                rank++;
-                break;
-        }
     }
 
 
@@ -164,22 +137,6 @@ enum Face {
     }
 
 
-    /**
-     * Get the value of a card.
-     * @return The value of a card.
-     */
-    public int value() {
-        return value;
-    }
-
-
-    /**
-     * Gets the rank number of a card.
-     * @return The rank.
-     */
-    public int getRank() {
-        return rank;
-    }
 
 }
 
