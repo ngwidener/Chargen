@@ -65,14 +65,14 @@ public class ChargenTcpClient extends AbstractChargenClient {
     public void printToStream(PrintStream out) throws SocketException, IOException {
         Socket socket = new Socket(getHost(), getPort());
         socket.setSoTimeout(TIME_OUT);
-        //socket.getOutputStream().write(flag.getBytes());
-        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-        dos.writeBytes(flag);
-        InputStream stream = socket.getInputStream();
+        DataOutputStream flagOut = new DataOutputStream(socket.getOutputStream());
+        flagOut.writeBytes(flag);
+        InputStream inStream = socket.getInputStream();
         while (!socket.isInputShutdown()) {
-            out.write(stream.read());
+            out.write(inStream.read());
         }
-        stream.close();
+        inStream.close();
+        flagOut.close();
         socket.close();
     }
 }
