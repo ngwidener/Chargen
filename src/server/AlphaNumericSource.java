@@ -10,8 +10,8 @@ package server;
  */
 public class AlphaNumericSource implements ChargenSource {
 
-    private static final int ASCII_START = 48;
-    private static final int ASCII_RANGE = 79;
+    private static final int ASCII_START = 32;
+    private static final int ASCII_RANGE = 95;
     private static final int LINE_LEN = 72;
     private static final int CARRIAGE_RETURN = 13;
     private static final int LINE_FEED = 10;
@@ -41,6 +41,9 @@ public class AlphaNumericSource implements ChargenSource {
             asciiBase = 0;
             linePos = -2;
             lines++;
+            while (!Character.isLetterOrDigit((char)(lines % ASCII_RANGE) + ASCII_START)) {
+                lines++;
+            }
         }
         else if (linePos < 0) {
             charValue = LINE_FEED;

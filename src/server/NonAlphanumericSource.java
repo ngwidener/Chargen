@@ -41,6 +41,9 @@ public class NonAlphanumericSource implements ChargenSource {
             asciiBase = 0;
             linePos = -2;
             lines++;
+            while (Character.isLetterOrDigit((char)(lines % ASCII_RANGE) + ASCII_START)) {
+                lines++;
+            }
         }
         else if (linePos < 0) {
             charValue = LINE_FEED;
