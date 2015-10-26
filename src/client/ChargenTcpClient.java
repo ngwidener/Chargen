@@ -1,5 +1,6 @@
 package client;
 
+import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.InetAddress;
@@ -27,7 +28,7 @@ public class ChargenTcpClient extends AbstractChargenClient {
      */
     public ChargenTcpClient(InetAddress host) {
         super(host);
-        flag = "\r\n";
+        flag = " flag ";
     }
 
     /**
@@ -38,7 +39,7 @@ public class ChargenTcpClient extends AbstractChargenClient {
      */
     public ChargenTcpClient(InetAddress host, int port) {
         super(host, port);
-        flag = "\r\n";
+        flag = " flag ";
     }
 
     /**
@@ -50,7 +51,7 @@ public class ChargenTcpClient extends AbstractChargenClient {
      */
     public ChargenTcpClient(InetAddress host, int port, String flag) {
         super (host, port);
-        this.flag = flag;
+        this.flag = " " + flag + " ";
     }
 
     /**
@@ -64,7 +65,9 @@ public class ChargenTcpClient extends AbstractChargenClient {
     public void printToStream(PrintStream out) throws SocketException, IOException {
         Socket socket = new Socket(getHost(), getPort());
         socket.setSoTimeout(TIME_OUT);
-        socket.getOutputStream().write(flag.getBytes());
+        //socket.getOutputStream().write(flag.getBytes());
+        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+        dos.writeBytes(flag);
         InputStream stream = socket.getInputStream();
         while (!socket.isInputShutdown()) {
             out.write(stream.read());
