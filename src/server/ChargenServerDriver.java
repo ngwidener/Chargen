@@ -52,11 +52,6 @@ public class ChargenServerDriver {
         catch (ChargenServerException e) {
             System.out.println("Server Exception");
         }
-        catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Add another catch block");
-            System.exit(1);
-        }
     }
 
 

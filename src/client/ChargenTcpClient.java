@@ -18,7 +18,7 @@ import java.util.Scanner;
  * @version 10/8/2015
  */
 public class ChargenTcpClient extends AbstractChargenClient {
-
+    /** The flag to send to a modified Chargen server; has whitespace on the ends for a scanner */
     private String flag;
 
     /**
@@ -55,7 +55,7 @@ public class ChargenTcpClient extends AbstractChargenClient {
     }
 
     /**
-     * Writes characters to a PrintStream as they are received from the server.
+     * Writes data to a PrintStream as it is received from the server.
      *
      * @param out The stream to which the characters will be printed.
      * @throws SocketException If a socket cannot be opened
@@ -72,10 +72,7 @@ public class ChargenTcpClient extends AbstractChargenClient {
             ObjectInputStream cardIn = new ObjectInputStream(socket.getInputStream());
             while (!socket.isInputShutdown()) {
                 try {
-                    Card card = (Card)cardIn.readObject();
-                    if (card != null) {
-                        out.println(card.toString());
-                    }
+                    out.println(cardIn.readObject().toString());
                 }
                 catch (ClassNotFoundException e) {
                     System.out.println("Class not found exception");

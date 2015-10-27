@@ -1,8 +1,5 @@
 package common;
 
-
-import java.io.IOException;
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
@@ -74,18 +71,6 @@ public class Card implements Serializable{
      */
     public String toString() {
         return face.getName() + " of " +  suit.getName();
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-    }
-
-    private void readObjectNoData() throws ObjectStreamException {
-
     }
 }
 

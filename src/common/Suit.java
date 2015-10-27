@@ -1,7 +1,5 @@
 package common;
 
-import java.io.IOException;
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
@@ -41,17 +39,5 @@ public enum Suit implements Serializable {
      */
     public String getName() {
         return name;
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-    }
-
-    private void readObjectNoData() throws ObjectStreamException {
-
     }
 }

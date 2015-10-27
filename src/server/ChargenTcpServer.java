@@ -18,14 +18,16 @@ import java.util.Scanner;
  * @version October 2015
  */
 public class ChargenTcpServer extends AbstractChargenServer {
-
+    /** The number of items for TCP servers to send */
     private static final int ITEMS_TO_SEND = Integer.MAX_VALUE;
 
+    /** The socket that will listen for incoming connections */
     ServerSocket welcomeSocket;
+    /** Connection to a client created by the welcome socket */
     Socket connectionSocket;
 
     /**
-     * Constructor
+     * Constructor; calls super and creates socket
      * @throws ChargenServerException
      */
     public ChargenTcpServer() throws ChargenServerException {
@@ -39,7 +41,7 @@ public class ChargenTcpServer extends AbstractChargenServer {
     }
 
     /**
-     * Constructor; calls super.
+     * Constructor; calls super and creates socket
      * @param port the port number.
      * @throws ChargenServerException
      */
@@ -55,7 +57,7 @@ public class ChargenTcpServer extends AbstractChargenServer {
     }
 
     /**
-     * Constructor; calls super.
+     * Constructor; calls super and creates socket
      * @param source the source.
      * @throws ChargenServerException
      */
@@ -70,7 +72,7 @@ public class ChargenTcpServer extends AbstractChargenServer {
     }
 
     /**
-     * Constructor; calls super.
+     * Constructor; calls super and creates socket
      * @param port the port number.
      * @param source the source.
      * @throws ChargenServerException
@@ -86,7 +88,7 @@ public class ChargenTcpServer extends AbstractChargenServer {
     }
 
     /**
-     * Listens for the clients to make a request.
+     * Listens for the clients to make a request and sends data until the client disconnects
      *
      * @throws ChargenServerException
      */

@@ -90,10 +90,5 @@ public class ChargenClientDriver {
             System.out.println("Error: Something went wrong while sending or receiving data.");
             System.exit(1);
         }
-        catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Add another catch block");
-            System.exit(1);
-        }
     }
 }
