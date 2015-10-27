@@ -27,7 +27,7 @@ public class CardSource implements ChargenSource {
                 cards.add(new Card(face, suit));
             }
         }
-        //Collections.shuffle(cards);
+        Collections.shuffle(cards);
         iterator = cards.iterator();
         this.itemsToSend = itemsToSend;
     }
